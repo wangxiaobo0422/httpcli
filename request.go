@@ -25,5 +25,13 @@ func WrapRequest(req *http.Request) *request {
 }
 
 func NewRequest(ctx context.Context, method, url string, body io.Reader, opts ...RequestOption) (*request, error) {
+	if v, ok := body.(iBody); ok {
+		reqBody, err := v.Create()
+		if err != nil {
+			return nil, err
+		}
 
+		body = reqBody
+
+	}
 }
